@@ -27,10 +27,16 @@ module Sass::Script::Functions
         end
         Sass::Util.check_range('Alpha channel', 0..1, alpha)
 
-        idat = "\x00\x00\x00\x10IDAT\x78\x01\x01\x05\x00\xfa\xff\x00" + [red, green, blue, (255*alpha).round].pack('C*') + "\x07\x7b\x02\xfd"
-        idat = idat + [Zlib::crc32(idat, 65521)].pack('V');
+        sig  = ["89504E470D0A1A0A0000"].pack('H*')
+        ihdr = ["000D"].pack('H*') + "IHDR" + ["000000010000000108060000001F15C489"].pack('H*')
 
-        image = "\x89\x50\x4E\x47\x0D\x0A\x1A\x0A\x00\x00\x00\x0DIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x06\x00\x00\x00\x1F\x15\xC4\x89" + idat + "\x00\x00\x00\x00IEND\xAE\x42\x60\x82"
+        image_data = [0, red, green, blue, (255*alpha).round].pack('C*')
+        compressed_data = Zlib::Deflate.deflate(image_data, Zlib::BEST_COMPRESSION)
+        idat = [compressed_data.length].pack('N') + 'IDAT' + compressed_data + [Zlib::crc32(compressed_data, Zlib::crc32('IDAT'))].pack('N');
+
+        iend = ["00000000"].pack('H*') + "IEND" + ["AE426082"].pack('H*')
+
+        image = sig + ihdr + idat + iend
 
         Sass::Script::String.new("data:image/png;base64,#{Base64.strict_encode64(image)}")
     end
