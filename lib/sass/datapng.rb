@@ -22,10 +22,10 @@ module Sass::Script::Functions
         end
         Sass::Util.check_range('Alpha channel', 0..1, alpha)
 
-        idat = "\x00\x00\x00\x10IDAT\x78\x01\x01\x05\x00\xfa\xff\x00".b + [red.value, green.value, blue.value, (255*opacity.value).round].pack('C*').b + "\x07\x7b\x02\xfd".b
-        idat = idat.b + [Zlib::crc32(idat, 65521)].pack('V').b;
+        idat = "\x00\x00\x00\x10IDAT\x78\x01\x01\x05\x00\xfa\xff\x00" + [red.value, green.value, blue.value, (255*opacity.value).round].pack('C*') + "\x07\x7b\x02\xfd"
+        idat = idat + [Zlib::crc32(idat, 65521)].pack('V');
 
-        image = "\x89\x50\x4E\x47\x0D\x0A\x1A\x0A\x00\x00\x00\x0DIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x06\x00\x00\x00\x1F\x15\xC4\x89".b + idat.b + "\x00\x00\x00\x00IEND\xAE\x42\x60\x82".b
+        image = "\x89\x50\x4E\x47\x0D\x0A\x1A\x0A\x00\x00\x00\x0DIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x06\x00\x00\x00\x1F\x15\xC4\x89" + idat + "\x00\x00\x00\x00IEND\xAE\x42\x60\x82"
 
         Sass::Script::String.new("data:image/png;base64,#{Base64.strict_encode64(image)}")
     end
