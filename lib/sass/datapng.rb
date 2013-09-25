@@ -1,4 +1,5 @@
 require "sass/datapng/version"
+require "sass"
 
 require 'zlib'
 require 'base64'
