@@ -15,8 +15,13 @@ module Sass::Script::Functions
             assert_type alpha, :Number, :alpha
 
             red, green, blue = color.rgb
+            alpha = alpha.value
         when 4
             red, green, blue, alpha = args
+            red = red.value
+            green = green.value
+            blue = blue.value
+            alpha = alpha.value
         else
             raise ArgumentError.new("wrong number of arguments (#{args.size} for 4)")
         end
