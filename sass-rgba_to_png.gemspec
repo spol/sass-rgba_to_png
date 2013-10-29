@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'sass/datapng/version'
+require 'sass/rgba_to_png/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "sass-datapng"
-  spec.version       = Sass::Datapng::VERSION
+  spec.name          = "sass-rgba_to_png"
+  spec.version       = Sass::RgbaToPng::VERSION
   spec.authors       = ["Seb Pollard"]
   spec.email         = ["seb@spolster.co.uk"]
   spec.description   = %q{Converts a rgba color to a data URI encoded PNG for transparent backgrounds in IE 8}

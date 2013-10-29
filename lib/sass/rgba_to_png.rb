@@ -1,11 +1,11 @@
-require "sass/datapng/version"
+require "sass/rgba_to_png/version"
 require "sass"
 
 require 'zlib'
 require 'base64'
 
 module Sass::Script::Functions
-    def data_png(*args)
+    def rgba_to_png(*args)
 
         case args.size
         when 2
